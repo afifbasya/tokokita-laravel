@@ -13,4 +13,25 @@ class ProductController extends Controller
 
         return view('products.index', compact('products'));
     }
+
+    public function create()
+    {
+        return view('products.create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'nama' => 'required',
+            'harga' => 'required|numeric',
+        ]);
+
+        Product::create([
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('products.index')->with('success', 'Add Product Success');
+    }
 }
